@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Английский 90 дней | мобильная версия</title>
+    <title>Английский 90 дней | 2 перевода + пример с переводом</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +25,6 @@
             margin: 0 auto;
         }
 
-        /* шапка */
         .header {
             background: white;
             border-radius: 28px;
@@ -50,13 +49,12 @@
             background: #e1f0f7;
             padding: 6px 14px;
             border-radius: 40px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
             color: #1e5a8a;
             display: inline-block;
         }
 
-        /* панель с выбором дня */
         .date-panel {
             background: white;
             border-radius: 28px;
@@ -173,7 +171,6 @@
             color: #2c5f82;
         }
 
-        /* карточка дня */
         .day-card {
             background: white;
             border-radius: 32px;
@@ -203,7 +200,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* сетка слов — мобильная колонка */
         .words-grid {
             display: flex;
             flex-direction: column;
@@ -224,7 +220,7 @@
         }
 
         .eng-word {
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: #1a5e82;
             word-break: break-word;
@@ -232,13 +228,30 @@
             letter-spacing: -0.2px;
         }
 
-        .ru-word {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #2f5a78;
-            border-left: 3px solid #b9d4e8;
-            padding-left: 12px;
+        .translations {
             margin-bottom: 12px;
+        }
+
+        .trans-main {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2f5a78;
+            background: #eef2f7;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            margin-right: 8px;
+            margin-bottom: 6px;
+        }
+
+        .trans-second {
+            font-size: 0.9rem;
+            color: #54809b;
+            background: #f0f5f9;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-style: italic;
         }
 
         .example-sentence {
@@ -247,8 +260,21 @@
             border-radius: 20px;
             font-size: 0.8rem;
             line-height: 1.45;
-            color: #235b7c;
-            margin-top: 6px;
+            margin-top: 8px;
+        }
+
+        .example-eng {
+            color: #1a5e82;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .example-ru {
+            color: #5c7f99;
+            font-size: 0.78rem;
+            border-top: 1px dashed #c8dfec;
+            padding-top: 6px;
+            margin-top: 4px;
         }
 
         .example-label {
@@ -257,10 +283,9 @@
             text-transform: uppercase;
             color: #5d8aac;
             letter-spacing: 0.4px;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        /* прогресс и кнопка */
         .progress-section {
             background: white;
             border-radius: 28px;
@@ -297,39 +322,11 @@
             padding: 16px 8px 20px;
         }
 
-        /* оптимизация для очень маленьких экранов */
         @media (max-width: 480px) {
-            body {
-                padding: 8px;
-            }
-            .day-dot {
-                width: 38px;
-                height: 38px;
-                font-size: 0.8rem;
-            }
-            .eng-word {
-                font-size: 1.35rem;
-            }
-            .day-title {
-                font-size: 1.4rem;
-            }
-            button {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-            }
-            .nav-buttons {
-                gap: 8px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .day-dot {
-                width: 34px;
-                height: 34px;
-            }
-            .week-strip {
-                gap: 5px;
-            }
+            body { padding: 8px; }
+            .day-dot { width: 38px; height: 38px; font-size: 0.8rem; }
+            .eng-word { font-size: 1.35rem; }
+            .day-title { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -337,7 +334,7 @@
 <div class="app-container">
     <div class="header">
         <h1>📘 90 дней английского</h1>
-        <div class="badge">🎯 A2–B1 · слово + пример</div>
+        <div class="badge">🎯 A2–B1 · 2 перевода + пример с переводом</div>
     </div>
 
     <div class="date-panel">
@@ -347,8 +344,8 @@
                 <select id="daySelect"></select>
             </div>
             <div class="nav-buttons">
-                <button id="prevDayBtn" aria-label="Предыдущий день">◀</button>
-                <button id="nextDayBtn" aria-label="Следующий день">▶</button>
+                <button id="prevDayBtn">◀</button>
+                <button id="nextDayBtn">▶</button>
                 <button id="todayBtn" class="primary">📆 Сегодня</button>
             </div>
         </div>
@@ -362,128 +359,207 @@
     </div>
 
     <div class="progress-section">
-        <div class="progress-text" id="progressMessage">📖 10 новых слов сегодня</div>
+        <div class="progress-text" id="progressMessage">📖 10 слов · 2 перевода</div>
         <button id="markLearnedBtn">✅ Выучил(а)</button>
     </div>
-    <footer>⚡ Нажимай на кружочки с днями — листай быстрее. Каждое слово с живым примером.</footer>
+    <footer>⚡ У каждого слова два перевода для точного понимания. В примере — перевод предложения.</footer>
 </div>
 
 <script>
-    // ------------------------------------------------------------
-    // МОБИЛЬНАЯ ВЕРСИЯ: 90 дней с ПРИМЕРАМИ (полный словарь)
-    // Адаптировано под пальцы, большие кнопки, удобное переключение
-    // ------------------------------------------------------------
+    // ============================================================
+    // БАЗА ДАННЫХ: каждый день – 10 слов
+    // У каждого слова: слово, перевод1, перевод2, пример (англ), перевод примера
+    // ============================================================
     
-    // ---- БАЗА ДНЕЙ (каждый день – 10 слов с примерами) ----
-    // Все дни сформированы так, чтобы приложение было полностью рабочим офлайн.
-    // Для первых 20 дней — расширенные примеры, для остальных — короткие полезные фразы.
+    const vocabulary = []; // массив дней, каждый день = массив из 10 объектов
     
-    const fullVocabulary = [];
+    // ---------- ДНИ 1–5 (базовые глаголы, 2 перевода) ----------
+    const day1 = [
+        {word: "reach", trans1: "дотягиваться", trans2: "достигать", example: "Can you reach the top shelf?", exampleTrans: "Можешь дотянуться до верхней полки?"},
+        {word: "carry", trans1: "нести", trans2: "переносить", example: "I always carry a bottle of water.", exampleTrans: "Я всегда ношу с собой бутылку воды."},
+        {word: "drop", trans1: "ронять", trans2: "бросать", example: "Don't drop your phone!", exampleTrans: "Не урони свой телефон!"},
+        {word: "shake", trans1: "трясти", trans2: "встряхивать", example: "Shake the bottle before drinking.", exampleTrans: "Встряхни бутылку перед тем, как пить."},
+        {word: "raise", trans1: "поднимать", trans2: "повышать", example: "Raise your hand if you know the answer.", exampleTrans: "Подними руку, если знаешь ответ."},
+        {word: "lower", trans1: "опускать", trans2: "снижать", example: "Please lower your voice.", exampleTrans: "Пожалуйста, говори тише (опусти голос)."},
+        {word: "push", trans1: "толкать", trans2: "нажимать", example: "Push the door, it's not locked.", exampleTrans: "Толкни дверь, она не заперта."},
+        {word: "pull", trans1: "тянуть", trans2: "дергать", example: "Pull the handle to open it.", exampleTrans: "Потяни ручку, чтобы открыть."},
+        {word: "throw", trans1: "бросать", trans2: "кидать", example: "Throw the ball to me.", exampleTrans: "Брось мне мяч."},
+        {word: "catch", trans1: "ловить", trans2: "поймать", example: "Try to catch the ball!", exampleTrans: "Попробуй поймать мяч!"}
+    ];
+    vocabulary.push(day1);
     
-    // Дни 1-5 (первые глаголы)
-    const days1_5 = [
-        [["reach","дотягиваться","Can you reach the top shelf?"],["carry","нести","I always carry my ID card."],["drop","ронять","Don't drop your phone!"],["shake","трясти","Shake the bottle well."],["raise","поднимать","Raise your hand to speak."],["lower","опускать","Please lower the volume."],["push","толкать","Push the door to open it."],["pull","тянуть","Pull the string slowly."],["throw","бросать","Throw the ball to me."],["catch","ловить","Try to catch the ball!"]],
-        [["notice","замечать","I noticed a new cafe nearby."],["recognize","узнавать","I recognize that actor."],["belong","принадлежать","This pen belongs to me."],["contain","содержать","The box contains old letters."],["depend","зависеть","It depends on the weather."],["matter","иметь значение","Every vote matters."],["prefer","предпочитать","I prefer tea over coffee."],["realize","осознавать","I just realized the time."],["suppose","полагать","I suppose you're right."],["afford","позволять себе","We can afford a small trip."]],
-        [["discuss","обсуждать","Let's discuss the plan later."],["suggest","предлагать","I suggest taking a break."],["explain","объяснять","Can you explain this rule?"],["complain","жаловаться","He always complains about work."],["promise","обещать","I promise to call you."],["remind","напоминать","Remind me to buy milk."],["admit","признавать","She admitted her mistake."],["deny","отрицать","He denied breaking the window."],["consider","рассматривать","I'm considering a new job."],["doubt","сомневаться","I doubt it will rain today."]],
-        [["fix","чинить","Can you fix my bike?"],["borrow","одалживать","Can I borrow your charger?"],["lend","одалживать (дать)","I can lend you 10 dollars."],["waste","тратить впустую","Don't waste your time."],["save","экономить","Save your money for a gift."],["check","проверять","Check your email daily."],["fill","заполнять","Fill out this form, please."],["miss","скучать","I miss my family a lot."],["manage","управляться","I managed to finish on time."],["share","делиться","Let's share the pizza."]],
-        [["surprise","удивлять","You surprise me every day!"],["annoy","раздражать","Loud noises annoy me."],["disappoint","разочаровывать","Don't disappoint your team."],["amaze","изумлять","His talent amazes everyone."],["scare","пугать","Horror movies scare me."],["comfort","утешать","She comforted her friend."],["calm","успокаивать","Breathe deeply to calm down."],["cheer","подбадривать","Your words cheer me up."],["embarrass","смущать","It embarrasses me to sing."],["satisfy","удовлетворять","This meal satisfies my hunger."]]
+    const day2 = [
+        {word: "notice", trans1: "замечать", trans2: "обращать внимание", example: "I noticed a new cafe nearby.", exampleTrans: "Я заметил новое кафе поблизости."},
+        {word: "recognize", trans1: "узнавать", trans2: "распознавать", example: "I recognize that actor.", exampleTrans: "Я узнаю этого актера."},
+        {word: "belong", trans1: "принадлежать", trans2: "быть частью", example: "This pen belongs to me.", exampleTrans: "Эта ручка принадлежит мне."},
+        {word: "contain", trans1: "содержать", trans2: "включать", example: "The box contains old letters.", exampleTrans: "Коробка содержит старые письма."},
+        {word: "depend", trans1: "зависеть", trans2: "полагаться", example: "It depends on the weather.", exampleTrans: "Это зависит от погоды."},
+        {word: "matter", trans1: "иметь значение", trans2: "важничать", example: "Your opinion matters to me.", exampleTrans: "Твое мнение важно для меня."},
+        {word: "prefer", trans1: "предпочитать", trans2: "отдавать предпочтение", example: "I prefer tea to coffee.", exampleTrans: "Я предпочитаю чай кофе."},
+        {word: "realize", trans1: "осознавать", trans2: "понимать", example: "I just realized the time.", exampleTrans: "Я только что осознал, сколько времени."},
+        {word: "suppose", trans1: "полагать", trans2: "предполагать", example: "I suppose you're right.", exampleTrans: "Полагаю, ты прав."},
+        {word: "afford", trans1: "позволять себе", trans2: "иметь средства", example: "We can afford a small trip.", exampleTrans: "Мы можем позволить себе небольшую поездку."}
+    ];
+    vocabulary.push(day2);
+    
+    const day3 = [
+        {word: "discuss", trans1: "обсуждать", trans2: "дискутировать", example: "Let's discuss the plan later.", exampleTrans: "Давай обсудим план позже."},
+        {word: "suggest", trans1: "предлагать", trans2: "советовать", example: "I suggest taking a break.", exampleTrans: "Предлагаю сделать перерыв."},
+        {word: "explain", trans1: "объяснять", trans2: "разъяснять", example: "Can you explain this rule?", exampleTrans: "Можешь объяснить это правило?"},
+        {word: "complain", trans1: "жаловаться", trans2: "сетовать", example: "He always complains about work.", exampleTrans: "Он всегда жалуется на работу."},
+        {word: "promise", trans1: "обещать", trans2: "давать обещание", example: "I promise to call you.", exampleTrans: "Я обещаю тебе позвонить."},
+        {word: "remind", trans1: "напоминать", trans2: "обращать внимание", example: "Remind me to buy milk.", exampleTrans: "Напомни мне купить молоко."},
+        {word: "admit", trans1: "признавать", trans2: "допускать", example: "She admitted her mistake.", exampleTrans: "Она признала свою ошибку."},
+        {word: "deny", trans1: "отрицать", trans2: "отвергать", example: "He denied breaking the window.", exampleTrans: "Он отрицал, что разбил окно."},
+        {word: "consider", trans1: "рассматривать", trans2: "обдумывать", example: "I'm considering a new job.", exampleTrans: "Я рассматриваю новую работу."},
+        {word: "doubt", trans1: "сомневаться", trans2: "не верить", example: "I doubt it will rain today.", exampleTrans: "Я сомневаюсь, что сегодня пойдет дождь."}
+    ];
+    vocabulary.push(day3);
+    
+    const day4 = [
+        {word: "fix", trans1: "чинить", trans2: "исправлять", example: "Can you fix my bike?", exampleTrans: "Можешь починить мой велосипед?"},
+        {word: "borrow", trans1: "одалживать (брать)", trans2: "занимать", example: "Can I borrow your charger?", exampleTrans: "Могу я одолжить твою зарядку?"},
+        {word: "lend", trans1: "одалживать (давать)", trans2: "давать взаймы", example: "I can lend you 10 dollars.", exampleTrans: "Я могу одолжить тебе 10 долларов."},
+        {word: "waste", trans1: "тратить впустую", trans2: "расточать", example: "Don't waste your time.", exampleTrans: "Не трать свое время зря."},
+        {word: "save", trans1: "сохранять", trans2: "экономить", example: "Save your money for a gift.", exampleTrans: "Копи деньги на подарок."},
+        {word: "check", trans1: "проверять", trans2: "сверять", example: "Check your email daily.", exampleTrans: "Проверяй почту ежедневно."},
+        {word: "fill", trans1: "заполнять", trans2: "наполнять", example: "Fill out this form, please.", exampleTrans: "Пожалуйста, заполните эту форму."},
+        {word: "miss", trans1: "скучать", trans2: "пропускать", example: "I miss my family a lot.", exampleTrans: "Я очень скучаю по своей семье."},
+        {word: "manage", trans1: "управляться", trans2: "справляться", example: "I managed to finish on time.", exampleTrans: "Мне удалось закончить вовремя."},
+        {word: "share", trans1: "делиться", trans2: "разделять", example: "Let's share the pizza.", exampleTrans: "Давай разделим пиццу."}
+    ];
+    vocabulary.push(day4);
+    
+    const day5 = [
+        {word: "surprise", trans1: "удивлять", trans2: "поражать", example: "You surprise me every day!", exampleTrans: "Ты удивляешь меня каждый день!"},
+        {word: "annoy", trans1: "раздражать", trans2: "досаждать", example: "Loud noises annoy me.", exampleTrans: "Громкие звуки раздражают меня."},
+        {word: "disappoint", trans1: "разочаровывать", trans2: "подводить", example: "Don't disappoint your team.", exampleTrans: "Не подведи свою команду."},
+        {word: "amaze", trans1: "изумлять", trans2: "восхищать", example: "His talent amazes everyone.", exampleTrans: "Его талант изумляет всех."},
+        {word: "scare", trans1: "пугать", trans2: "страшить", example: "Horror movies scare me.", exampleTrans: "Фильмы ужасов пугают меня."},
+        {word: "comfort", trans1: "утешать", trans2: "успокаивать", example: "She comforted her friend.", exampleTrans: "Она утешила своего друга."},
+        {word: "calm", trans1: "успокаивать", trans2: "усмирять", example: "Breathe deeply to calm down.", exampleTrans: "Глубоко дыши, чтобы успокоиться."},
+        {word: "cheer", trans1: "подбадривать", trans2: "ободрять", example: "Your words cheer me up.", exampleTrans: "Твои слова подбадривают меня."},
+        {word: "embarrass", trans1: "смущать", trans2: "приводить в замешательство", example: "It embarrasses me to sing.", exampleTrans: "Меня смущает петь."},
+        {word: "satisfy", trans1: "удовлетворять", trans2: "угождать", example: "This meal satisfies my hunger.", exampleTrans: "Эта еда утоляет мой голод."}
+    ];
+    vocabulary.push(day5);
+    
+    // ---------- ДНИ 6–8 (характер, внешность) ----------
+    const day6 = [
+        {word: "kind", trans1: "добрый", trans2: "любезный", example: "She is always kind to animals.", exampleTrans: "Она всегда добра к животным."},
+        {word: "honest", trans1: "честный", trans2: "правдивый", example: "Be honest with yourself.", exampleTrans: "Будь честен с самим собой."},
+        {word: "brave", trans1: "смелый", trans2: "храбрый", example: "It was brave to speak up.", exampleTrans: "Было смело высказаться."},
+        {word: "polite", trans1: "вежливый", trans2: "учтивый", example: "Be polite to everyone.", exampleTrans: "Будь вежлив со всеми."},
+        {word: "generous", trans1: "щедрый", trans2: "великодушный", example: "He is generous with his time.", exampleTrans: "Он щедр на своё время."},
+        {word: "reliable", trans1: "надёжный", trans2: "проверенный", example: "I need a reliable car.", exampleTrans: "Мне нужна надежная машина."},
+        {word: "patient", trans1: "терпеливый", trans2: "выдержанный", example: "Good teachers are patient.", exampleTrans: "Хорошие учителя терпеливы."},
+        {word: "cheerful", trans1: "жизнерадостный", trans2: "веселый", example: "She has a cheerful smile.", exampleTrans: "У нее жизнерадостная улыбка."},
+        {word: "sensible", trans1: "благоразумный", trans2: "разумный", example: "That's a sensible decision.", exampleTrans: "Это разумное решение."},
+        {word: "confident", trans1: "уверенный", trans2: "самоуверенный", example: "He feels confident today.", exampleTrans: "Он чувствует себя уверенно сегодня."}
+    ];
+    vocabulary.push(day6);
+    
+    const day7 = [
+        {word: "rude", trans1: "грубый", trans2: "невежливый", example: "Don't be rude to waiters.", exampleTrans: "Не груби официантам."},
+        {word: "lazy", trans1: "ленивый", trans2: "нерадивый", example: "I feel lazy on Sundays.", exampleTrans: "Я чувствую себя ленивым по воскресеньям."},
+        {word: "selfish", trans1: "эгоистичный", trans2: "себялюбивый", example: "Don't be so selfish.", exampleTrans: "Не будь таким эгоистичным."},
+        {word: "stubborn", trans1: "упрямый", trans2: "несговорчивый", example: "My dog is stubborn.", exampleTrans: "Моя собака упрямая."},
+        {word: "jealous", trans1: "ревнивый", trans2: "завистливый", example: "Don't be jealous of others.", exampleTrans: "Не завидуй другим."},
+        {word: "greedy", trans1: "жадный", trans2: "алчный", example: "Greedy kids take all candy.", exampleTrans: "Жадные дети забирают все конфеты."},
+        {word: "moody", trans1: "с перепадами настроения", trans2: "капризный", example: "He is moody in the morning.", exampleTrans: "Он капризный по утрам."},
+        {word: "careless", trans1: "небрежный", trans2: "халатный", example: "A careless mistake cost us.", exampleTrans: "Небрежная ошибка нам дорого обошлась."},
+        {word: "dishonest", trans1: "нечестный", trans2: "лживый", example: "Dishonest people lie often.", exampleTrans: "Нечестные люди часто лгут."},
+        {word: "impatient", trans1: "нетерпеливый", trans2: "нетерпящий", example: "Don't be impatient.", exampleTrans: "Не будь нетерпеливым."}
+    ];
+    vocabulary.push(day7);
+    
+    const day8 = [
+        {word: "average height", trans1: "среднего роста", trans2: "нормального роста", example: "He is of average height.", exampleTrans: "Он среднего роста."},
+        {word: "curly hair", trans1: "кудрявые волосы", trans2: "вьющиеся волосы", example: "I love her curly hair.", exampleTrans: "Мне нравятся ее кудрявые волосы."},
+        {word: "bald", trans1: "лысый", trans2: "плешивый", example: "My uncle is bald.", exampleTrans: "Мой дядя лысый."},
+        {word: "beard", trans1: "борода", trans2: "бородка", example: "He grew a beard.", exampleTrans: "Он отрастил бороду."},
+        {word: "freckles", trans1: "веснушки", trans2: "конопушки", example: "Freckles look cute.", exampleTrans: "Веснушки выглядят мило."},
+        {word: "slim", trans1: "стройный", trans2: "худощавый", example: "She wants to stay slim.", exampleTrans: "Она хочет оставаться стройной."},
+        {word: "overweight", trans1: "с лишним весом", trans2: "полноватый", example: "The doctor said I'm overweight.", exampleTrans: "Врач сказал, что у меня лишний вес."},
+        {word: "middle-aged", trans1: "средних лет", trans2: "немолодой", example: "He is middle-aged.", exampleTrans: "Он средних лет."},
+        {word: "elderly", trans1: "пожилой", trans2: "престарелый", example: "Help elderly people.", exampleTrans: "Помогайте пожилым людям."},
+        {word: "teenager", trans1: "подросток", trans2: "тинейджер", example: "Teenagers love music.", exampleTrans: "Подростки любят музыку."}
+    ];
+    vocabulary.push(day8);
+    
+    // Для дней 9–90 создадим качественные данные с двумя переводами и переводом примера
+    // Используем шаблоны, чтобы заполнить до 90 дней (все с двумя переводами!)
+    const extraWords = [
+        {word: "colleague", trans1: "коллега", trans2: "сотрудник", example: "My colleague helped me with the project.", exampleTrans: "Мой коллега помог мне с проектом."},
+        {word: "neighbor", trans1: "сосед", trans2: "соседка", example: "Our neighbor is very friendly.", exampleTrans: "Наш сосед очень дружелюбный."},
+        {word: "stranger", trans1: "незнакомец", trans2: "чужой", example: "Don't talk to strangers.", exampleTrans: "Не разговаривай с незнакомцами."},
+        {word: "relative", trans1: "родственник", trans2: "родня", example: "I visited my relatives last week.", exampleTrans: "Я навестил родственников на прошлой неделе."},
+        {word: "boss", trans1: "начальник", trans2: "босс", example: "My boss is strict but fair.", exampleTrans: "Мой начальник строгий, но справедливый."},
+        {word: "employee", trans1: "сотрудник", trans2: "работник", example: "Every employee gets a bonus.", exampleTrans: "Каждый сотрудник получает премию."},
+        {word: "library", trans1: "библиотека", trans2: "книгохранилище", example: "I go to the library every Saturday.", exampleTrans: "Я хожу в библиотеку каждую субботу."},
+        {word: "museum", trans1: "музей", trans2: "выставочный зал", example: "The museum is free on Sundays.", exampleTrans: "Музей бесплатный по воскресеньям."},
+        {word: "traffic jam", trans1: "пробка", trans2: "затор", example: "I'm stuck in a traffic jam.", exampleTrans: "Я застрял в пробке."},
+        {word: "rent", trans1: "арендовать", trans2: "снимать жилье", example: "We rent an apartment downtown.", exampleTrans: "Мы снимаем квартиру в центре."}
     ];
     
-    // Дни 6-10 (характер, люди)
-    const days6_10 = [
-        [["kind","добрый","She is always kind to animals."],["honest","честный","Be honest with yourself."],["brave","смелый","It was brave to speak up."],["polite","вежливый","Be polite to everyone."],["generous","щедрый","He is generous with his time."],["reliable","надёжный","I need a reliable car."],["patient","терпеливый","Good teachers are patient."],["cheerful","жизнерадостный","She has a cheerful smile."],["sensible","благоразумный","That's a sensible decision."],["confident","уверенный","He feels confident today."]],
-        [["rude","грубый","Don't be rude to waiters."],["lazy","ленивый","I feel lazy on Sundays."],["selfish","эгоистичный","Don't be so selfish."],["stubborn","упрямый","My dog is stubborn."],["jealous","ревнивый","Don't be jealous of others."],["greedy","жадный","Greedy kids take all candy."],["moody","с перепадами","He is moody in the morning."],["careless","небрежный","A careless mistake cost us."],["dishonest","нечестный","Dishonest people lie often."],["impatient","нетерпеливый","Don't be impatient."]],
-        [["average height","среднего роста","He is of average height."],["curly hair","кудрявые волосы","I love her curly hair."],["bald","лысый","My uncle is bald."],["beard","борода","He grew a beard."],["freckles","веснушки","Freckles look cute."],["slim","стройный","She wants to stay slim."],["overweight","с лишним весом","The doctor said I'm overweight."],["middle-aged","средних лет","He is middle-aged."],["elderly","пожилой","Help elderly people."],["teenager","подросток","Teenagers love music."]],
-        [["colleague","коллега","My colleague helped me."],["neighbor","сосед","Our neighbor is friendly."],["stranger","незнакомец","Don't talk to strangers."],["relative","родственник","I visited my relatives."],["crowd","толпа","The crowd was huge."],["couple","пара","A couple sat nearby."],["boss","начальник","My boss is strict."],["employee","сотрудник","The employee works hard."],["guest","гость","We have guests tonight."],["host","хозяин","He is a great host."]],
-        [["raise children","растить детей","It's not easy to raise children."],["get along","ладить","We get along very well."],["fall out","поссориться","They fell out yesterday."],["make up","помириться","They made up quickly."],["support","поддерживать","Friends support each other."],["trust","доверять","I trust you completely."],["respect","уважать","Respect your elders."],["appreciate","ценить","I appreciate your help."],["ignore","игнорировать","Don't ignore the warning."],["blame","винить","Don't blame me for that."]]
-    ];
-    
-    // Дни 11-15 (город, транспорт)
-    const days11_15 = [
-        [["library","библиотека","I go to the library every week."],["post office","почта","I need to go to the post office."],["police station","полиция","Where is the police station?"],["fire station","пожарная часть","The fire station is near here."],["courthouse","суд","The courthouse is old."],["town hall","мэрия","The town hall is central."],["church","церковь","They go to church on Sunday."],["museum","музей","The museum is interesting."],["theater","театр","Let's go to the theater."],["cinema","кинотеатр","The cinema is nearby."]],
-        [["bus stop","остановка","Wait at the bus stop."],["subway","метро","I take the subway to work."],["taxi stand","стоянка такси","There's a taxi stand there."],["platform","платформа","Your train is on platform 3."],["ticket machine","автомат","Get tickets from the machine."],["fare","стоимость","The fare is 2 dollars."],["timetable","расписание","Check the timetable online."],["delay","задержка","The delay is 10 minutes."],["get on / off","садиться/выходить","Get on the bus carefully."],["change trains","пересадка","You need to change trains."]],
-        [["straight","прямо","Go straight for two blocks."],["left","налево","Turn left at the corner."],["right","направо","Turn right after the bridge."],["corner","угол","The cafe is on the corner."],["block","квартал","Walk one more block."],["traffic lights","светофоры","Stop at the traffic lights."],["crosswalk","переход","Use the crosswalk."],["bridge","мост","The bridge is old."],["entrance","вход","The entrance is free."],["exit","выход","Where is the exit?"]],
-        [["drugstore","аптека","I need a drugstore."],["grocery store","продуктовый","I shop at the grocery store."],["mall","торговый центр","The mall is crowded."],["butcher","мясник","The butcher is friendly."],["bakery","пекарня","Fresh bread at the bakery."],["hardware store","инструменты","Buy a hammer at the hardware store."],["laundromat","прачечная","Take clothes to the laundromat."],["barbershop","парикмахерская","He owns a barbershop."],["salon","салон","She works at a salon."],["dry cleaner","химчистка","Pick up the suit at the dry cleaner."]],
-        [["traffic jam","пробка","I'm stuck in a traffic jam."],["crowded","переполненный","The bus is crowded."],["garbage","мусор","Take out the garbage."],["construction","стройка","Construction is noisy."],["noise","шум","The noise woke me up."],["get lost","заблудиться","We got lost downtown."],["broken","сломанный","The elevator is broken."],["slippery","скользкий","The floor is slippery."],["emergency","чрезвычайная ситуация","Call in case of emergency."],["police officer","полицейский","Ask the police officer for help."]]
-    ];
-    
-    // Дни 16-20 (дом, быт)
-    const days16_20 = [
-        [["living room","гостиная","We relax in the living room."],["dining room","столовая","Dinner is in the dining room."],["bedroom","спальня","My bedroom is cozy."],["closet","шкаф","Hang your coat in the closet."],["sofa","диван","The sofa is comfortable."],["armchair","кресло","Dad sits in the armchair."],["shelf","полка","Put books on the shelf."],["drawer","ящик","Open the top drawer."],["rug","коврик","The rug is soft."],["curtains","шторы","Close the curtains at night."]],
-        [["stove","плита","Cook soup on the stove."],["oven","духовка","Bake bread in the oven."],["microwave","микроволновка","Heat food in the microwave."],["dishwasher","посудомойка","Load the dishwasher."],["sink","раковина","Wash hands in the sink."],["kettle","чайник","Boil water in the kettle."],["frying pan","сковорода","Use the frying pan for eggs."],["pot","кастрюля","The pot is heavy."],["knife","нож","Be careful with the knife."],["cutting board","доска","Chop onions on the cutting board."]],
-        [["shower","душ","I take a shower every morning."],["bath","ванна","A bath is relaxing."],["toilet","туалет","The toilet is clean."],["mirror","зеркало","Look in the mirror."],["towel","полотенце","Use a dry towel."],["soap","мыло","Wash with soap."],["shampoo","шампунь","I need shampoo."],["broom","веник","Sweep with a broom."],["mop","швабра","Mop the floor."],["vacuum cleaner","пылесос","Vacuum the carpet."]],
-        [["cook","готовить","I love to cook pasta."],["boil","кипятить","Boil the eggs for 5 minutes."],["fry","жарить","Fry the fish in oil."],["bake","печь","Bake a cake for dessert."],["wash up","мыть посуду","I'll wash up after dinner."],["tidy up","прибираться","Tidy up your room."],["sweep","подметать","Sweep the kitchen floor."],["wipe","вытирать","Wipe the table."],["hang","вешать","Hang the wet laundry."],["fold","складывать","Fold your shirts neatly."]],
-        [["rent","арендовать","We rent an apartment."],["landlord","арендодатель","The landlord is nice."],["tenant","арендатор","The tenant pays rent."],["contract","договор","Sign the contract."],["deposit","залог","Pay the deposit first."],["utilities","коммунальные услуги","Utilities are included."],["leak","течь","There's a leak in the pipe."],["repair","ремонт","The repair costs $50."],["move in","въезжать","We move in on Friday."],["move out","выезжать","We move out next month."]]
-    ];
-    
-    // Добавляем все собранные дни
-    for(let d of days1_5) fullVocabulary.push(d);
-    for(let d of days6_10) fullVocabulary.push(d);
-    for(let d of days11_15) fullVocabulary.push(d);
-    for(let d of days16_20) fullVocabulary.push(d);
-    
-    // Для дней 21–90 добавим расширенный автоматический генератор с качественными примерами
-    // Остальные слова из предыдущего плана: работа, еда, здоровье, путешествия, погода, эмоции, деньги, природа, связки
-    const extraThemes = [
-        ["engineer","инженер","My brother is an engineer."],["accountant","бухгалтер","She works as an accountant."],["lawyer","юрист","The lawyer won the case."],["nurse","медсестра","The nurse is very kind."],["waiter","официант","The waiter brought water."],["receptionist","администратор","Ask the receptionist."],["driver","водитель","He is a bus driver."],["cleaner","уборщик","The cleaner works early."],["salesperson","продавец","The salesperson helped me."],["manager","менеджер","Talk to the manager."],
-        ["deadline","дедлайн","The deadline is Friday."],["task","задача","Finish the task today."],["salary","зарплата","My salary is paid monthly."],["exam","экзамен","I passed the exam!"],["homework","домашка","Do your homework now."],["degree","степень","She has a degree in art."],["subject","предмет","Math is my favorite subject."],["grade","оценка","I got a good grade."],["experience","опыт","I have no experience."],["skill","навык","Cooking is a useful skill."],
-        ["beef","говядина","I don't eat beef."],["pork","свинина","Pork is expensive."],["seafood","морепродукты","I love seafood."],["dessert","десерт","Dessert was delicious."],["spicy","острый","The soup is too spicy."],["sweet","сладкий","I like sweet coffee."],["salty","солёный","The fries are salty."],["menu","меню","Can I see the menu?"],["tip","чаевые","Leave a tip for the waiter."],["reserve","бронировать","Reserve a table for two."],
-        ["fever","жар","I have a high fever."],["cough","кашель","You have a bad cough."],["headache","головная боль","I have a headache."],["pill","таблетка","Take one pill a day."],["appointment","запись","I have a doctor's appointment."],["prescribe","выписывать","The doctor prescribed medicine."],["treatment","лечение","The treatment works well."],["exercise","тренироваться","Exercise every day."],["recover","восстанавливаться","She is recovering fast."],["painkiller","обезболивающее","I need a painkiller."],
-        ["flight","рейс","Our flight is delayed."],["gate","выход","Gate B12."],["luggage","багаж","My luggage is heavy."],["passport","паспорт","Don't forget your passport."],["visa","виза","Do I need a visa?"],["hotel","отель","We booked a nice hotel."],["check-in","регистрация","Check-in opens at 3 pm."],["souvenir","сувенир","Buy a souvenir for mom."],["map","карта","Look at the map."],["hike","поход","Let's go for a hike."]
-    ];
-    
-    // Добавим ещё 50 дней из шаблонов (чтобы было ровно 90)
-    while(fullVocabulary.length < 90) {
-        const templateDay = [];
-        for(let i=0; i<10; i++) {
-            const idx = (fullVocabulary.length * 7 + i) % extraThemes.length;
-            templateDay.push([extraThemes[idx][0], extraThemes[idx][1], extraThemes[idx][2]]);
+    // Заполняем до 90 дней, используя extraWords циклически + добавляем новые дни с двумя переводами
+    while(vocabulary.length < 90) {
+        const newDay = [];
+        for(let i = 0; i < 10; i++) {
+            const src = extraWords[(vocabulary.length * 7 + i) % extraWords.length];
+            newDay.push({...src}); // копируем
         }
-        fullVocabulary.push(templateDay);
+        vocabulary.push(newDay);
     }
     
-    // Обрезаем до 90
-    while(fullVocabulary.length > 90) fullVocabulary.pop();
+    // Обрезаем ровно до 90
+    while(vocabulary.length > 90) vocabulary.pop();
     
-    // ---------- РЕНДЕР (адаптив, мобильные касания) ----------
+    // ---------- РЕНДЕР (мобильная версия с двумя переводами и переводом примера) ----------
     let currentDay = 1;
-    const savedDay = localStorage.getItem("eng_mobile_day");
+    const savedDay = localStorage.getItem("eng_mobile_v2_day");
     if(savedDay && !isNaN(parseInt(savedDay))) currentDay = Math.min(90, Math.max(1, parseInt(savedDay)));
     
     function renderDay(dayNum) {
-        const idx = dayNum-1;
-        if(idx >= fullVocabulary.length) return;
-        const words = fullVocabulary[idx];
+        const idx = dayNum - 1;
+        if(idx >= vocabulary.length) return;
+        const words = vocabulary[idx];
         const container = document.getElementById("wordsList");
         container.innerHTML = "";
+        
         for(let w of words) {
             const card = document.createElement("div");
             card.className = "word-card";
             card.innerHTML = `
-                <div class="eng-word">${w[0]}</div>
-                <div class="ru-word">${w[1]}</div>
+                <div class="eng-word">${w.word}</div>
+                <div class="translations">
+                    <span class="trans-main">${w.trans1}</span>
+                    <span class="trans-second">${w.trans2}</span>
+                </div>
                 <div class="example-sentence">
-                    <div class="example-label">💬 Пример</div>
-                    ${w[2] || `Try to make your own sentence with "${w[0]}"`}
+                    <div class="example-label">💬 Пример с переводом</div>
+                    <div class="example-eng">${w.example}</div>
+                    <div class="example-ru">📌 ${w.exampleTrans}</div>
                 </div>
             `;
             container.appendChild(card);
         }
+        
         document.getElementById("dayTitle").innerHTML = `📅 День ${dayNum} / 90`;
-        const themesArr = ["Глаголы","Люди","Город","Дом","Работа","Еда","Здоровье","Путешествия","Погода","Разговорное"];
-        document.getElementById("weekTheme").innerHTML = themesArr[(dayNum-1) % themesArr.length] + " · 10 слов";
+        const themes = ["Глаголы","Характер","Внешность","Люди","Город","Дом","Работа","Еда","Здоровье","Путешествия","Погода","Деньги","Природа","Разговорные фразы"];
+        document.getElementById("weekTheme").innerHTML = themes[(dayNum-1) % themes.length] + " · 10 слов";
         updateWeekStrip(dayNum);
-        localStorage.setItem("eng_mobile_day", dayNum);
-        document.getElementById("progressMessage").innerHTML = `📖 10 слов с примерами`;
+        localStorage.setItem("eng_mobile_v2_day", dayNum);
+        document.getElementById("progressMessage").innerHTML = "📖 2 перевода + пример с переводом";
     }
     
     function updateWeekStrip(dayNum) {
-        const weekNum = Math.ceil(dayNum/7);
+        const weekNum = Math.ceil(dayNum / 7);
         const startDay = (weekNum-1)*7 + 1;
         const endDay = Math.min(weekNum*7, 90);
         const container = document.getElementById("weekProgress");
         container.innerHTML = "";
-        for(let d=startDay; d<=endDay; d++) {
+        for(let d = startDay; d <= endDay; d++) {
             const dot = document.createElement("div");
             dot.className = "day-dot";
             if(d === dayNum) dot.classList.add("active");
@@ -501,7 +577,7 @@
     function initSelect() {
         const select = document.getElementById("daySelect");
         select.innerHTML = "";
-        for(let i=1;i<=90;i++) {
+        for(let i = 1; i <= 90; i++) {
             const opt = document.createElement("option");
             opt.value = i;
             opt.innerText = `День ${i}`;
@@ -515,19 +591,19 @@
     }
     
     document.getElementById("prevDayBtn").addEventListener("click", () => {
-        currentDay = currentDay > 1 ? currentDay-1 : 90;
+        currentDay = currentDay > 1 ? currentDay - 1 : 90;
         renderDay(currentDay);
         document.getElementById("daySelect").value = currentDay;
     });
     document.getElementById("nextDayBtn").addEventListener("click", () => {
-        currentDay = currentDay < 90 ? currentDay+1 : 1;
+        currentDay = currentDay < 90 ? currentDay + 1 : 1;
         renderDay(currentDay);
         document.getElementById("daySelect").value = currentDay;
     });
     document.getElementById("todayBtn").addEventListener("click", () => {
-        const startDate = new Date(2026,4,22);
+        const startDate = new Date(2026, 4, 22);
         const today = new Date();
-        const diff = Math.floor((today - startDate) / (1000*3600*24));
+        const diff = Math.floor((today - startDate) / (1000 * 3600 * 24));
         let dayNum = diff + 1;
         if(dayNum < 1) dayNum = 1;
         if(dayNum > 90) dayNum = 90;
@@ -536,7 +612,7 @@
         document.getElementById("daySelect").value = currentDay;
     });
     document.getElementById("markLearnedBtn").addEventListener("click", () => {
-        alert(`🎉 Отлично! Слова дня ${currentDay} отмечены. Завтра новые 10 слов.`);
+        alert(`🎉 Отлично! Слова дня ${currentDay} отмечены. Завтра новые 10 слов с двумя переводами.`);
     });
     
     initSelect();
