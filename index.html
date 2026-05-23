@@ -19,10 +19,10 @@
 
 <!-- Манифест для PWA (чтобы работала установка на телефон) -->
 <link rel="manifest" href="site.webmanifest">
-
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Английский 90 дней | 2 перевода + пример с переводом</title>
+    <title>ENGLISH 900</title>
     <style>
         * {
             margin: 0;
@@ -243,8 +243,16 @@
             font-weight: 700;
             color: #1a5e82;
             word-break: break-word;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: -0.2px;
+        }
+
+        .transcription {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #54809b;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
         }
 
         .translations {
@@ -324,7 +332,7 @@
             color: #2c6b8f;
         }
 
-        #markLearnedBtn {
+        #shareBtn {
             background: #eef2fa;
             border: none;
             padding: 10px 18px;
@@ -332,6 +340,7 @@
             font-weight: 600;
             border-radius: 50px;
             color: #1a5e82;
+            cursor: pointer;
         }
 
         footer {
@@ -353,7 +362,7 @@
 <div class="app-container">
     <div class="header">
         <h1>📘 90 дней английского</h1>
-        <div class="badge">🎯 A2–B1 · 2 перевода + пример с переводом</div>
+        <div class="badge">🎯 A2–B1 · транскрипция + 2 перевода</div>
     </div>
 
     <div class="date-panel">
@@ -378,165 +387,156 @@
     </div>
 
     <div class="progress-section">
-        <div class="progress-text" id="progressMessage">📖 10 слов · 2 перевода</div>
-        <button id="markLearnedBtn">✅ Выучил(а)</button>
+        <div class="progress-text" id="progressMessage">📖 10 слов · транскрипция и переводы</div>
+        <button id="shareBtn">📤 Поделиться</button>
     </div>
-    <footer>⚡ У каждого слова два перевода для точного понимания. В примере — перевод предложения.</footer>
+    <footer>⚡ У каждого слова транскрипция, 2 перевода и пример с переводом. Делитесь успехами с друзьями!</footer>
 </div>
 
 <script>
     // ============================================================
-    // БАЗА ДАННЫХ: каждый день – 10 слов
-    // У каждого слова: слово, перевод1, перевод2, пример (англ), перевод примера
+    // БАЗА ДАННЫХ: 90 дней, 10 слов в день
+    // У каждого слова: слово, транскрипция, перевод1, перевод2, пример (англ), перевод примера
     // ============================================================
     
-    const vocabulary = []; // массив дней, каждый день = массив из 10 объектов
+    const vocabulary = []; // массив дней
     
-    // ---------- ДНИ 1–5 (базовые глаголы, 2 перевода) ----------
+    // ---------- ДНИ 1–5 (базовые глаголы) с транскрипцией ----------
     const day1 = [
-        {word: "reach", trans1: "дотягиваться", trans2: "достигать", example: "Can you reach the top shelf?", exampleTrans: "Можешь дотянуться до верхней полки?"},
-        {word: "carry", trans1: "нести", trans2: "переносить", example: "I always carry a bottle of water.", exampleTrans: "Я всегда ношу с собой бутылку воды."},
-        {word: "drop", trans1: "ронять", trans2: "бросать", example: "Don't drop your phone!", exampleTrans: "Не урони свой телефон!"},
-        {word: "shake", trans1: "трясти", trans2: "встряхивать", example: "Shake the bottle before drinking.", exampleTrans: "Встряхни бутылку перед тем, как пить."},
-        {word: "raise", trans1: "поднимать", trans2: "повышать", example: "Raise your hand if you know the answer.", exampleTrans: "Подними руку, если знаешь ответ."},
-        {word: "lower", trans1: "опускать", trans2: "снижать", example: "Please lower your voice.", exampleTrans: "Пожалуйста, говори тише (опусти голос)."},
-        {word: "push", trans1: "толкать", trans2: "нажимать", example: "Push the door, it's not locked.", exampleTrans: "Толкни дверь, она не заперта."},
-        {word: "pull", trans1: "тянуть", trans2: "дергать", example: "Pull the handle to open it.", exampleTrans: "Потяни ручку, чтобы открыть."},
-        {word: "throw", trans1: "бросать", trans2: "кидать", example: "Throw the ball to me.", exampleTrans: "Брось мне мяч."},
-        {word: "catch", trans1: "ловить", trans2: "поймать", example: "Try to catch the ball!", exampleTrans: "Попробуй поймать мяч!"}
+        {word: "reach", transcription: "/riːtʃ/", trans1: "дотягиваться", trans2: "достигать", example: "Can you reach the top shelf?", exampleTrans: "Можешь дотянуться до верхней полки?"},
+        {word: "carry", transcription: "/ˈkæri/", trans1: "нести", trans2: "переносить", example: "I always carry a bottle of water.", exampleTrans: "Я всегда ношу с собой бутылку воды."},
+        {word: "drop", transcription: "/drɒp/", trans1: "ронять", trans2: "бросать", example: "Don't drop your phone!", exampleTrans: "Не урони свой телефон!"},
+        {word: "shake", transcription: "/ʃeɪk/", trans1: "трясти", trans2: "встряхивать", example: "Shake the bottle before drinking.", exampleTrans: "Встряхни бутылку перед тем, как пить."},
+        {word: "raise", transcription: "/reɪz/", trans1: "поднимать", trans2: "повышать", example: "Raise your hand if you know the answer.", exampleTrans: "Подними руку, если знаешь ответ."},
+        {word: "lower", transcription: "/ˈləʊər/", trans1: "опускать", trans2: "снижать", example: "Please lower your voice.", exampleTrans: "Пожалуйста, говори тише (опусти голос)."},
+        {word: "push", transcription: "/pʊʃ/", trans1: "толкать", trans2: "нажимать", example: "Push the door, it's not locked.", exampleTrans: "Толкни дверь, она не заперта."},
+        {word: "pull", transcription: "/pʊl/", trans1: "тянуть", trans2: "дергать", example: "Pull the handle to open it.", exampleTrans: "Потяни ручку, чтобы открыть."},
+        {word: "throw", transcription: "/θrəʊ/", trans1: "бросать", trans2: "кидать", example: "Throw the ball to me.", exampleTrans: "Брось мне мяч."},
+        {word: "catch", transcription: "/kætʃ/", trans1: "ловить", trans2: "поймать", example: "Try to catch the ball!", exampleTrans: "Попробуй поймать мяч!"}
     ];
     vocabulary.push(day1);
     
     const day2 = [
-        {word: "notice", trans1: "замечать", trans2: "обращать внимание", example: "I noticed a new cafe nearby.", exampleTrans: "Я заметил новое кафе поблизости."},
-        {word: "recognize", trans1: "узнавать", trans2: "распознавать", example: "I recognize that actor.", exampleTrans: "Я узнаю этого актера."},
-        {word: "belong", trans1: "принадлежать", trans2: "быть частью", example: "This pen belongs to me.", exampleTrans: "Эта ручка принадлежит мне."},
-        {word: "contain", trans1: "содержать", trans2: "включать", example: "The box contains old letters.", exampleTrans: "Коробка содержит старые письма."},
-        {word: "depend", trans1: "зависеть", trans2: "полагаться", example: "It depends on the weather.", exampleTrans: "Это зависит от погоды."},
-        {word: "matter", trans1: "иметь значение", trans2: "важничать", example: "Your opinion matters to me.", exampleTrans: "Твое мнение важно для меня."},
-        {word: "prefer", trans1: "предпочитать", trans2: "отдавать предпочтение", example: "I prefer tea to coffee.", exampleTrans: "Я предпочитаю чай кофе."},
-        {word: "realize", trans1: "осознавать", trans2: "понимать", example: "I just realized the time.", exampleTrans: "Я только что осознал, сколько времени."},
-        {word: "suppose", trans1: "полагать", trans2: "предполагать", example: "I suppose you're right.", exampleTrans: "Полагаю, ты прав."},
-        {word: "afford", trans1: "позволять себе", trans2: "иметь средства", example: "We can afford a small trip.", exampleTrans: "Мы можем позволить себе небольшую поездку."}
+        {word: "notice", transcription: "/ˈnəʊtɪs/", trans1: "замечать", trans2: "обращать внимание", example: "I noticed a new cafe nearby.", exampleTrans: "Я заметил новое кафе поблизости."},
+        {word: "recognize", transcription: "/ˈrekəɡnaɪz/", trans1: "узнавать", trans2: "распознавать", example: "I recognize that actor.", exampleTrans: "Я узнаю этого актера."},
+        {word: "belong", transcription: "/bɪˈlɒŋ/", trans1: "принадлежать", trans2: "быть частью", example: "This pen belongs to me.", exampleTrans: "Эта ручка принадлежит мне."},
+        {word: "contain", transcription: "/kənˈteɪn/", trans1: "содержать", trans2: "включать", example: "The box contains old letters.", exampleTrans: "Коробка содержит старые письма."},
+        {word: "depend", transcription: "/dɪˈpend/", trans1: "зависеть", trans2: "полагаться", example: "It depends on the weather.", exampleTrans: "Это зависит от погоды."},
+        {word: "matter", transcription: "/ˈmætər/", trans1: "иметь значение", trans2: "важничать", example: "Your opinion matters to me.", exampleTrans: "Твое мнение важно для меня."},
+        {word: "prefer", transcription: "/prɪˈfɜːr/", trans1: "предпочитать", trans2: "отдавать предпочтение", example: "I prefer tea to coffee.", exampleTrans: "Я предпочитаю чай кофе."},
+        {word: "realize", transcription: "/ˈriːəlaɪz/", trans1: "осознавать", trans2: "понимать", example: "I just realized the time.", exampleTrans: "Я только что осознал, сколько времени."},
+        {word: "suppose", transcription: "/səˈpəʊz/", trans1: "полагать", trans2: "предполагать", example: "I suppose you're right.", exampleTrans: "Полагаю, ты прав."},
+        {word: "afford", transcription: "/əˈfɔːrd/", trans1: "позволять себе", trans2: "иметь средства", example: "We can afford a small trip.", exampleTrans: "Мы можем позволить себе небольшую поездку."}
     ];
     vocabulary.push(day2);
     
     const day3 = [
-        {word: "discuss", trans1: "обсуждать", trans2: "дискутировать", example: "Let's discuss the plan later.", exampleTrans: "Давай обсудим план позже."},
-        {word: "suggest", trans1: "предлагать", trans2: "советовать", example: "I suggest taking a break.", exampleTrans: "Предлагаю сделать перерыв."},
-        {word: "explain", trans1: "объяснять", trans2: "разъяснять", example: "Can you explain this rule?", exampleTrans: "Можешь объяснить это правило?"},
-        {word: "complain", trans1: "жаловаться", trans2: "сетовать", example: "He always complains about work.", exampleTrans: "Он всегда жалуется на работу."},
-        {word: "promise", trans1: "обещать", trans2: "давать обещание", example: "I promise to call you.", exampleTrans: "Я обещаю тебе позвонить."},
-        {word: "remind", trans1: "напоминать", trans2: "обращать внимание", example: "Remind me to buy milk.", exampleTrans: "Напомни мне купить молоко."},
-        {word: "admit", trans1: "признавать", trans2: "допускать", example: "She admitted her mistake.", exampleTrans: "Она признала свою ошибку."},
-        {word: "deny", trans1: "отрицать", trans2: "отвергать", example: "He denied breaking the window.", exampleTrans: "Он отрицал, что разбил окно."},
-        {word: "consider", trans1: "рассматривать", trans2: "обдумывать", example: "I'm considering a new job.", exampleTrans: "Я рассматриваю новую работу."},
-        {word: "doubt", trans1: "сомневаться", trans2: "не верить", example: "I doubt it will rain today.", exampleTrans: "Я сомневаюсь, что сегодня пойдет дождь."}
+        {word: "discuss", transcription: "/dɪˈskʌs/", trans1: "обсуждать", trans2: "дискутировать", example: "Let's discuss the plan later.", exampleTrans: "Давай обсудим план позже."},
+        {word: "suggest", transcription: "/səˈdʒest/", trans1: "предлагать", trans2: "советовать", example: "I suggest taking a break.", exampleTrans: "Предлагаю сделать перерыв."},
+        {word: "explain", transcription: "/ɪkˈspleɪn/", trans1: "объяснять", trans2: "разъяснять", example: "Can you explain this rule?", exampleTrans: "Можешь объяснить это правило?"},
+        {word: "complain", transcription: "/kəmˈpleɪn/", trans1: "жаловаться", trans2: "сетовать", example: "He always complains about work.", exampleTrans: "Он всегда жалуется на работу."},
+        {word: "promise", transcription: "/ˈprɒmɪs/", trans1: "обещать", trans2: "давать обещание", example: "I promise to call you.", exampleTrans: "Я обещаю тебе позвонить."},
+        {word: "remind", transcription: "/rɪˈmaɪnd/", trans1: "напоминать", trans2: "обращать внимание", example: "Remind me to buy milk.", exampleTrans: "Напомни мне купить молоко."},
+        {word: "admit", transcription: "/ədˈmɪt/", trans1: "признавать", trans2: "допускать", example: "She admitted her mistake.", exampleTrans: "Она признала свою ошибку."},
+        {word: "deny", transcription: "/dɪˈnaɪ/", trans1: "отрицать", trans2: "отвергать", example: "He denied breaking the window.", exampleTrans: "Он отрицал, что разбил окно."},
+        {word: "consider", transcription: "/kənˈsɪdər/", trans1: "рассматривать", trans2: "обдумывать", example: "I'm considering a new job.", exampleTrans: "Я рассматриваю новую работу."},
+        {word: "doubt", transcription: "/daʊt/", trans1: "сомневаться", trans2: "не верить", example: "I doubt it will rain today.", exampleTrans: "Я сомневаюсь, что сегодня пойдет дождь."}
     ];
     vocabulary.push(day3);
     
     const day4 = [
-        {word: "fix", trans1: "чинить", trans2: "исправлять", example: "Can you fix my bike?", exampleTrans: "Можешь починить мой велосипед?"},
-        {word: "borrow", trans1: "одалживать (брать)", trans2: "занимать", example: "Can I borrow your charger?", exampleTrans: "Могу я одолжить твою зарядку?"},
-        {word: "lend", trans1: "одалживать (давать)", trans2: "давать взаймы", example: "I can lend you 10 dollars.", exampleTrans: "Я могу одолжить тебе 10 долларов."},
-        {word: "waste", trans1: "тратить впустую", trans2: "расточать", example: "Don't waste your time.", exampleTrans: "Не трать свое время зря."},
-        {word: "save", trans1: "сохранять", trans2: "экономить", example: "Save your money for a gift.", exampleTrans: "Копи деньги на подарок."},
-        {word: "check", trans1: "проверять", trans2: "сверять", example: "Check your email daily.", exampleTrans: "Проверяй почту ежедневно."},
-        {word: "fill", trans1: "заполнять", trans2: "наполнять", example: "Fill out this form, please.", exampleTrans: "Пожалуйста, заполните эту форму."},
-        {word: "miss", trans1: "скучать", trans2: "пропускать", example: "I miss my family a lot.", exampleTrans: "Я очень скучаю по своей семье."},
-        {word: "manage", trans1: "управляться", trans2: "справляться", example: "I managed to finish on time.", exampleTrans: "Мне удалось закончить вовремя."},
-        {word: "share", trans1: "делиться", trans2: "разделять", example: "Let's share the pizza.", exampleTrans: "Давай разделим пиццу."}
+        {word: "fix", transcription: "/fɪks/", trans1: "чинить", trans2: "исправлять", example: "Can you fix my bike?", exampleTrans: "Можешь починить мой велосипед?"},
+        {word: "borrow", transcription: "/ˈbɒrəʊ/", trans1: "одалживать (брать)", trans2: "занимать", example: "Can I borrow your charger?", exampleTrans: "Могу я одолжить твою зарядку?"},
+        {word: "lend", transcription: "/lend/", trans1: "одалживать (давать)", trans2: "давать взаймы", example: "I can lend you 10 dollars.", exampleTrans: "Я могу одолжить тебе 10 долларов."},
+        {word: "waste", transcription: "/weɪst/", trans1: "тратить впустую", trans2: "расточать", example: "Don't waste your time.", exampleTrans: "Не трать свое время зря."},
+        {word: "save", transcription: "/seɪv/", trans1: "сохранять", trans2: "экономить", example: "Save your money for a gift.", exampleTrans: "Копи деньги на подарок."},
+        {word: "check", transcription: "/tʃek/", trans1: "проверять", trans2: "сверять", example: "Check your email daily.", exampleTrans: "Проверяй почту ежедневно."},
+        {word: "fill", transcription: "/fɪl/", trans1: "заполнять", trans2: "наполнять", example: "Fill out this form, please.", exampleTrans: "Пожалуйста, заполните эту форму."},
+        {word: "miss", transcription: "/mɪs/", trans1: "скучать", trans2: "пропускать", example: "I miss my family a lot.", exampleTrans: "Я очень скучаю по своей семье."},
+        {word: "manage", transcription: "/ˈmænɪdʒ/", trans1: "управляться", trans2: "справляться", example: "I managed to finish on time.", exampleTrans: "Мне удалось закончить вовремя."},
+        {word: "share", transcription: "/ʃeər/", trans1: "делиться", trans2: "разделять", example: "Let's share the pizza.", exampleTrans: "Давай разделим пиццу."}
     ];
     vocabulary.push(day4);
     
     const day5 = [
-        {word: "surprise", trans1: "удивлять", trans2: "поражать", example: "You surprise me every day!", exampleTrans: "Ты удивляешь меня каждый день!"},
-        {word: "annoy", trans1: "раздражать", trans2: "досаждать", example: "Loud noises annoy me.", exampleTrans: "Громкие звуки раздражают меня."},
-        {word: "disappoint", trans1: "разочаровывать", trans2: "подводить", example: "Don't disappoint your team.", exampleTrans: "Не подведи свою команду."},
-        {word: "amaze", trans1: "изумлять", trans2: "восхищать", example: "His talent amazes everyone.", exampleTrans: "Его талант изумляет всех."},
-        {word: "scare", trans1: "пугать", trans2: "страшить", example: "Horror movies scare me.", exampleTrans: "Фильмы ужасов пугают меня."},
-        {word: "comfort", trans1: "утешать", trans2: "успокаивать", example: "She comforted her friend.", exampleTrans: "Она утешила своего друга."},
-        {word: "calm", trans1: "успокаивать", trans2: "усмирять", example: "Breathe deeply to calm down.", exampleTrans: "Глубоко дыши, чтобы успокоиться."},
-        {word: "cheer", trans1: "подбадривать", trans2: "ободрять", example: "Your words cheer me up.", exampleTrans: "Твои слова подбадривают меня."},
-        {word: "embarrass", trans1: "смущать", trans2: "приводить в замешательство", example: "It embarrasses me to sing.", exampleTrans: "Меня смущает петь."},
-        {word: "satisfy", trans1: "удовлетворять", trans2: "угождать", example: "This meal satisfies my hunger.", exampleTrans: "Эта еда утоляет мой голод."}
+        {word: "surprise", transcription: "/səˈpraɪz/", trans1: "удивлять", trans2: "поражать", example: "You surprise me every day!", exampleTrans: "Ты удивляешь меня каждый день!"},
+        {word: "annoy", transcription: "/əˈnɔɪ/", trans1: "раздражать", trans2: "досаждать", example: "Loud noises annoy me.", exampleTrans: "Громкие звуки раздражают меня."},
+        {word: "disappoint", transcription: "/ˌdɪsəˈpɔɪnt/", trans1: "разочаровывать", trans2: "подводить", example: "Don't disappoint your team.", exampleTrans: "Не подведи свою команду."},
+        {word: "amaze", transcription: "/əˈmeɪz/", trans1: "изумлять", trans2: "восхищать", example: "His talent amazes everyone.", exampleTrans: "Его талант изумляет всех."},
+        {word: "scare", transcription: "/skeər/", trans1: "пугать", trans2: "страшить", example: "Horror movies scare me.", exampleTrans: "Фильмы ужасов пугают меня."},
+        {word: "comfort", transcription: "/ˈkʌmfət/", trans1: "утешать", trans2: "успокаивать", example: "She comforted her friend.", exampleTrans: "Она утешила своего друга."},
+        {word: "calm", transcription: "/kɑːm/", trans1: "успокаивать", trans2: "усмирять", example: "Breathe deeply to calm down.", exampleTrans: "Глубоко дыши, чтобы успокоиться."},
+        {word: "cheer", transcription: "/tʃɪər/", trans1: "подбадривать", trans2: "ободрять", example: "Your words cheer me up.", exampleTrans: "Твои слова подбадривают меня."},
+        {word: "embarrass", transcription: "/ɪmˈbærəs/", trans1: "смущать", trans2: "приводить в замешательство", example: "It embarrasses me to sing.", exampleTrans: "Меня смущает петь."},
+        {word: "satisfy", transcription: "/ˈsætɪsfaɪ/", trans1: "удовлетворять", trans2: "угождать", example: "This meal satisfies my hunger.", exampleTrans: "Эта еда утоляет мой голод."}
     ];
     vocabulary.push(day5);
     
-    // ---------- ДНИ 6–8 (характер, внешность) ----------
+    // Дни 6–8 (характер, внешность) с транскрипцией
     const day6 = [
-        {word: "kind", trans1: "добрый", trans2: "любезный", example: "She is always kind to animals.", exampleTrans: "Она всегда добра к животным."},
-        {word: "honest", trans1: "честный", trans2: "правдивый", example: "Be honest with yourself.", exampleTrans: "Будь честен с самим собой."},
-        {word: "brave", trans1: "смелый", trans2: "храбрый", example: "It was brave to speak up.", exampleTrans: "Было смело высказаться."},
-        {word: "polite", trans1: "вежливый", trans2: "учтивый", example: "Be polite to everyone.", exampleTrans: "Будь вежлив со всеми."},
-        {word: "generous", trans1: "щедрый", trans2: "великодушный", example: "He is generous with his time.", exampleTrans: "Он щедр на своё время."},
-        {word: "reliable", trans1: "надёжный", trans2: "проверенный", example: "I need a reliable car.", exampleTrans: "Мне нужна надежная машина."},
-        {word: "patient", trans1: "терпеливый", trans2: "выдержанный", example: "Good teachers are patient.", exampleTrans: "Хорошие учителя терпеливы."},
-        {word: "cheerful", trans1: "жизнерадостный", trans2: "веселый", example: "She has a cheerful smile.", exampleTrans: "У нее жизнерадостная улыбка."},
-        {word: "sensible", trans1: "благоразумный", trans2: "разумный", example: "That's a sensible decision.", exampleTrans: "Это разумное решение."},
-        {word: "confident", trans1: "уверенный", trans2: "самоуверенный", example: "He feels confident today.", exampleTrans: "Он чувствует себя уверенно сегодня."}
+        {word: "kind", transcription: "/kaɪnd/", trans1: "добрый", trans2: "любезный", example: "She is always kind to animals.", exampleTrans: "Она всегда добра к животным."},
+        {word: "honest", transcription: "/ˈɒnɪst/", trans1: "честный", trans2: "правдивый", example: "Be honest with yourself.", exampleTrans: "Будь честен с самим собой."},
+        {word: "brave", transcription: "/breɪv/", trans1: "смелый", trans2: "храбрый", example: "It was brave to speak up.", exampleTrans: "Было смело высказаться."},
+        {word: "polite", transcription: "/pəˈlaɪt/", trans1: "вежливый", trans2: "учтивый", example: "Be polite to everyone.", exampleTrans: "Будь вежлив со всеми."},
+        {word: "generous", transcription: "/ˈdʒenərəs/", trans1: "щедрый", trans2: "великодушный", example: "He is generous with his time.", exampleTrans: "Он щедр на своё время."},
+        {word: "reliable", transcription: "/rɪˈlaɪəbl/", trans1: "надёжный", trans2: "проверенный", example: "I need a reliable car.", exampleTrans: "Мне нужна надежная машина."},
+        {word: "patient", transcription: "/ˈpeɪʃnt/", trans1: "терпеливый", trans2: "выдержанный", example: "Good teachers are patient.", exampleTrans: "Хорошие учителя терпеливы."},
+        {word: "cheerful", transcription: "/ˈtʃɪəfl/", trans1: "жизнерадостный", trans2: "веселый", example: "She has a cheerful smile.", exampleTrans: "У нее жизнерадостная улыбка."},
+        {word: "sensible", transcription: "/ˈsensəbl/", trans1: "благоразумный", trans2: "разумный", example: "That's a sensible decision.", exampleTrans: "Это разумное решение."},
+        {word: "confident", transcription: "/ˈkɒnfɪdənt/", trans1: "уверенный", trans2: "самоуверенный", example: "He feels confident today.", exampleTrans: "Он чувствует себя уверенно сегодня."}
     ];
     vocabulary.push(day6);
     
     const day7 = [
-        {word: "rude", trans1: "грубый", trans2: "невежливый", example: "Don't be rude to waiters.", exampleTrans: "Не груби официантам."},
-        {word: "lazy", trans1: "ленивый", trans2: "нерадивый", example: "I feel lazy on Sundays.", exampleTrans: "Я чувствую себя ленивым по воскресеньям."},
-        {word: "selfish", trans1: "эгоистичный", trans2: "себялюбивый", example: "Don't be so selfish.", exampleTrans: "Не будь таким эгоистичным."},
-        {word: "stubborn", trans1: "упрямый", trans2: "несговорчивый", example: "My dog is stubborn.", exampleTrans: "Моя собака упрямая."},
-        {word: "jealous", trans1: "ревнивый", trans2: "завистливый", example: "Don't be jealous of others.", exampleTrans: "Не завидуй другим."},
-        {word: "greedy", trans1: "жадный", trans2: "алчный", example: "Greedy kids take all candy.", exampleTrans: "Жадные дети забирают все конфеты."},
-        {word: "moody", trans1: "с перепадами настроения", trans2: "капризный", example: "He is moody in the morning.", exampleTrans: "Он капризный по утрам."},
-        {word: "careless", trans1: "небрежный", trans2: "халатный", example: "A careless mistake cost us.", exampleTrans: "Небрежная ошибка нам дорого обошлась."},
-        {word: "dishonest", trans1: "нечестный", trans2: "лживый", example: "Dishonest people lie often.", exampleTrans: "Нечестные люди часто лгут."},
-        {word: "impatient", trans1: "нетерпеливый", trans2: "нетерпящий", example: "Don't be impatient.", exampleTrans: "Не будь нетерпеливым."}
+        {word: "rude", transcription: "/ruːd/", trans1: "грубый", trans2: "невежливый", example: "Don't be rude to waiters.", exampleTrans: "Не груби официантам."},
+        {word: "lazy", transcription: "/ˈleɪzi/", trans1: "ленивый", trans2: "нерадивый", example: "I feel lazy on Sundays.", exampleTrans: "Я чувствую себя ленивым по воскресеньям."},
+        {word: "selfish", transcription: "/ˈselfɪʃ/", trans1: "эгоистичный", trans2: "себялюбивый", example: "Don't be so selfish.", exampleTrans: "Не будь таким эгоистичным."},
+        {word: "stubborn", transcription: "/ˈstʌbən/", trans1: "упрямый", trans2: "несговорчивый", example: "My dog is stubborn.", exampleTrans: "Моя собака упрямая."},
+        {word: "jealous", transcription: "/ˈdʒeləs/", trans1: "ревнивый", trans2: "завистливый", example: "Don't be jealous of others.", exampleTrans: "Не завидуй другим."},
+        {word: "greedy", transcription: "/ˈɡriːdi/", trans1: "жадный", trans2: "алчный", example: "Greedy kids take all candy.", exampleTrans: "Жадные дети забирают все конфеты."},
+        {word: "moody", transcription: "/ˈmuːdi/", trans1: "с перепадами настроения", trans2: "капризный", example: "He is moody in the morning.", exampleTrans: "Он капризный по утрам."},
+        {word: "careless", transcription: "/ˈkeələs/", trans1: "небрежный", trans2: "халатный", example: "A careless mistake cost us.", exampleTrans: "Небрежная ошибка нам дорого обошлась."},
+        {word: "dishonest", transcription: "/dɪsˈɒnɪst/", trans1: "нечестный", trans2: "лживый", example: "Dishonest people lie often.", exampleTrans: "Нечестные люди часто лгут."},
+        {word: "impatient", transcription: "/ɪmˈpeɪʃnt/", trans1: "нетерпеливый", trans2: "нетерпящий", example: "Don't be impatient.", exampleTrans: "Не будь нетерпеливым."}
     ];
     vocabulary.push(day7);
     
     const day8 = [
-        {word: "average height", trans1: "среднего роста", trans2: "нормального роста", example: "He is of average height.", exampleTrans: "Он среднего роста."},
-        {word: "curly hair", trans1: "кудрявые волосы", trans2: "вьющиеся волосы", example: "I love her curly hair.", exampleTrans: "Мне нравятся ее кудрявые волосы."},
-        {word: "bald", trans1: "лысый", trans2: "плешивый", example: "My uncle is bald.", exampleTrans: "Мой дядя лысый."},
-        {word: "beard", trans1: "борода", trans2: "бородка", example: "He grew a beard.", exampleTrans: "Он отрастил бороду."},
-        {word: "freckles", trans1: "веснушки", trans2: "конопушки", example: "Freckles look cute.", exampleTrans: "Веснушки выглядят мило."},
-        {word: "slim", trans1: "стройный", trans2: "худощавый", example: "She wants to stay slim.", exampleTrans: "Она хочет оставаться стройной."},
-        {word: "overweight", trans1: "с лишним весом", trans2: "полноватый", example: "The doctor said I'm overweight.", exampleTrans: "Врач сказал, что у меня лишний вес."},
-        {word: "middle-aged", trans1: "средних лет", trans2: "немолодой", example: "He is middle-aged.", exampleTrans: "Он средних лет."},
-        {word: "elderly", trans1: "пожилой", trans2: "престарелый", example: "Help elderly people.", exampleTrans: "Помогайте пожилым людям."},
-        {word: "teenager", trans1: "подросток", trans2: "тинейджер", example: "Teenagers love music.", exampleTrans: "Подростки любят музыку."}
+        {word: "average height", transcription: "/ˈævərɪdʒ haɪt/", trans1: "среднего роста", trans2: "нормального роста", example: "He is of average height.", exampleTrans: "Он среднего роста."},
+        {word: "curly hair", transcription: "/ˈkɜːli heər/", trans1: "кудрявые волосы", trans2: "вьющиеся волосы", example: "I love her curly hair.", exampleTrans: "Мне нравятся ее кудрявые волосы."},
+        {word: "bald", transcription: "/bɔːld/", trans1: "лысый", trans2: "плешивый", example: "My uncle is bald.", exampleTrans: "Мой дядя лысый."},
+        {word: "beard", transcription: "/bɪəd/", trans1: "борода", trans2: "бородка", example: "He grew a beard.", exampleTrans: "Он отрастил бороду."},
+        {word: "freckles", transcription: "/ˈfreklz/", trans1: "веснушки", trans2: "конопушки", example: "Freckles look cute.", exampleTrans: "Веснушки выглядят мило."},
+        {word: "slim", transcription: "/slɪm/", trans1: "стройный", trans2: "худощавый", example: "She wants to stay slim.", exampleTrans: "Она хочет оставаться стройной."},
+        {word: "overweight", transcription: "/ˌəʊvəˈweɪt/", trans1: "с лишним весом", trans2: "полноватый", example: "The doctor said I'm overweight.", exampleTrans: "Врач сказал, что у меня лишний вес."},
+        {word: "middle-aged", transcription: "/ˌmɪdl ˈeɪdʒd/", trans1: "средних лет", trans2: "немолодой", example: "He is middle-aged.", exampleTrans: "Он средних лет."},
+        {word: "elderly", transcription: "/ˈeldəli/", trans1: "пожилой", trans2: "престарелый", example: "Help elderly people.", exampleTrans: "Помогайте пожилым людям."},
+        {word: "teenager", transcription: "/ˈtiːneɪdʒər/", trans1: "подросток", trans2: "тинейджер", example: "Teenagers love music.", exampleTrans: "Подростки любят музыку."}
     ];
     vocabulary.push(day8);
     
-    // Для дней 9–90 создадим качественные данные с двумя переводами и переводом примера
-    // Используем шаблоны, чтобы заполнить до 90 дней (все с двумя переводами!)
-    const extraWords = [
-        {word: "colleague", trans1: "коллега", trans2: "сотрудник", example: "My colleague helped me with the project.", exampleTrans: "Мой коллега помог мне с проектом."},
-        {word: "neighbor", trans1: "сосед", trans2: "соседка", example: "Our neighbor is very friendly.", exampleTrans: "Наш сосед очень дружелюбный."},
-        {word: "stranger", trans1: "незнакомец", trans2: "чужой", example: "Don't talk to strangers.", exampleTrans: "Не разговаривай с незнакомцами."},
-        {word: "relative", trans1: "родственник", trans2: "родня", example: "I visited my relatives last week.", exampleTrans: "Я навестил родственников на прошлой неделе."},
-        {word: "boss", trans1: "начальник", trans2: "босс", example: "My boss is strict but fair.", exampleTrans: "Мой начальник строгий, но справедливый."},
-        {word: "employee", trans1: "сотрудник", trans2: "работник", example: "Every employee gets a bonus.", exampleTrans: "Каждый сотрудник получает премию."},
-        {word: "library", trans1: "библиотека", trans2: "книгохранилище", example: "I go to the library every Saturday.", exampleTrans: "Я хожу в библиотеку каждую субботу."},
-        {word: "museum", trans1: "музей", trans2: "выставочный зал", example: "The museum is free on Sundays.", exampleTrans: "Музей бесплатный по воскресеньям."},
-        {word: "traffic jam", trans1: "пробка", trans2: "затор", example: "I'm stuck in a traffic jam.", exampleTrans: "Я застрял в пробке."},
-        {word: "rent", trans1: "арендовать", trans2: "снимать жилье", example: "We rent an apartment downtown.", exampleTrans: "Мы снимаем квартиру в центре."}
+    // Заполняем оставшиеся дни (9–90) циклом, добавляя транскрипции
+    const extraBase = [
+        {word: "colleague", transcription: "/ˈkɒliːɡ/", trans1: "коллега", trans2: "сотрудник", example: "My colleague helped me.", exampleTrans: "Мой коллега помог мне."},
+        {word: "neighbor", transcription: "/ˈneɪbər/", trans1: "сосед", trans2: "соседка", example: "Our neighbor is friendly.", exampleTrans: "Наш сосед дружелюбный."},
+        {word: "library", transcription: "/ˈlaɪbrəri/", trans1: "библиотека", trans2: "книгохранилище", example: "I go to the library.", exampleTrans: "Я хожу в библиотеку."},
+        {word: "traffic jam", transcription: "/ˈtræfɪk dʒæm/", trans1: "пробка", trans2: "затор", example: "I'm stuck in a traffic jam.", exampleTrans: "Я застрял в пробке."},
+        {word: "rent", transcription: "/rent/", trans1: "арендовать", trans2: "снимать", example: "We rent an apartment.", exampleTrans: "Мы снимаем квартиру."}
     ];
     
-    // Заполняем до 90 дней, используя extraWords циклически + добавляем новые дни с двумя переводами
     while(vocabulary.length < 90) {
         const newDay = [];
         for(let i = 0; i < 10; i++) {
-            const src = extraWords[(vocabulary.length * 7 + i) % extraWords.length];
-            newDay.push({...src}); // копируем
+            const src = extraBase[(vocabulary.length * 3 + i) % extraBase.length];
+            newDay.push({...src});
         }
         vocabulary.push(newDay);
     }
-    
-    // Обрезаем ровно до 90
     while(vocabulary.length > 90) vocabulary.pop();
     
-    // ---------- РЕНДЕР (мобильная версия с двумя переводами и переводом примера) ----------
+    // ---------- РЕНДЕР (транскрипция, убрана кнопка "выучил") ----------
     let currentDay = 1;
-    const savedDay = localStorage.getItem("eng_mobile_v2_day");
+    const savedDay = localStorage.getItem("eng_mobile_final");
     if(savedDay && !isNaN(parseInt(savedDay))) currentDay = Math.min(90, Math.max(1, parseInt(savedDay)));
     
     function renderDay(dayNum) {
@@ -551,6 +551,7 @@
             card.className = "word-card";
             card.innerHTML = `
                 <div class="eng-word">${w.word}</div>
+                <div class="transcription">${w.transcription || '[ˈteɪkən]'}</div>
                 <div class="translations">
                     <span class="trans-main">${w.trans1}</span>
                     <span class="trans-second">${w.trans2}</span>
@@ -568,8 +569,8 @@
         const themes = ["Глаголы","Характер","Внешность","Люди","Город","Дом","Работа","Еда","Здоровье","Путешествия","Погода","Деньги","Природа","Разговорные фразы"];
         document.getElementById("weekTheme").innerHTML = themes[(dayNum-1) % themes.length] + " · 10 слов";
         updateWeekStrip(dayNum);
-        localStorage.setItem("eng_mobile_v2_day", dayNum);
-        document.getElementById("progressMessage").innerHTML = "📖 2 перевода + пример с переводом";
+        localStorage.setItem("eng_mobile_final", dayNum);
+        document.getElementById("progressMessage").innerHTML = "📖 2 перевода + транскрипция + пример";
     }
     
     function updateWeekStrip(dayNum) {
@@ -630,9 +631,34 @@
         renderDay(currentDay);
         document.getElementById("daySelect").value = currentDay;
     });
-    document.getElementById("markLearnedBtn").addEventListener("click", () => {
-        alert(`🎉 Отлично! Слова дня ${currentDay} отмечены. Завтра новые 10 слов с двумя переводами.`);
-    });
+    
+    // ----- КНОПКА ПОДЕЛИТЬСЯ (без кнопки "выучил") -----
+    const shareBtn = document.getElementById("shareBtn");
+    if(shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+            const shareData = {
+                title: "📘 Английский 90 дней",
+                text: `Я учу английский день ${currentDay} из 90! Сегодня 10 слов с транскрипцией, переводами и примерами. Присоединяйся!`,
+                url: "https://kibadanil.github.io/english/"
+            };
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    if (err.name !== "AbortError") fallbackShare();
+                }
+            } else {
+                fallbackShare();
+            }
+            function fallbackShare() {
+                navigator.clipboard.writeText("https://kibadanil.github.io/english/").then(() => {
+                    alert("🔗 Ссылка скопирована! Отправьте её другу.");
+                }).catch(() => {
+                    alert("Скопируйте ссылку: https://kibadanil.github.io/english/");
+                });
+            }
+        });
+    }
     
     initSelect();
     renderDay(currentDay);
